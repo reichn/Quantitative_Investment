@@ -1,0 +1,18 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "rechain22", email = "guorch29@gmail.com"},
+]
+dependencies = [
+    "akshare>=1.6.15",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[tool.pdm]
+
+[build-system]
+requires = ["pdm-pep517>=0.12.0"]
+build-backend = "pdm.pep517.api"
