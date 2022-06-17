@@ -57,9 +57,15 @@ def short():
     return (margin_sse, margin_szse, value_sse, value_szse, num_sse, num_szse)
 
 
+def quick_data():
+    today = datetime.date.today().strftime("%Y%m%d")
+    path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
+    with open(path + "\\" + today + "_instant.txt", "a") as f:
+        f.write("北上资金： " + str(north()) + "\n")
+        f.write("历史新高： " + str(len(list(his_high()))) + " " + " ".join(list(his_high())) + "\n")
+        f.write("一年新低： " + str(len(list(year_low()))) + " " + " ".join(year_low()) + "\n")
+        f.write("成交比： " + str(trade_ratio()) + "\n")
+
+
 if __name__ == "__main__":
-    print("北上", north())
-    print("历史新高", his_high())
-    print("一年新低", year_low())
-    print("成交比", trade_ratio())
-    print("上证融券余额", "深证融券余额", "上证总市值", "深证总市值", "上证股票数量", "深证股票数量", short())
+    quick_data()
