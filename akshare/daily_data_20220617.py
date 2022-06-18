@@ -32,22 +32,31 @@ def trade_ratio():
     return ratio
 
 
-def short():
-    today = datetime.date.today().strftime("%Y%m%d")
+def short(day="today"):
+    if day == 'today':
+        day = datetime.date.today().strftime("%Y%m%d")
     try:
-        stock_margin_sse_df = ak.stock_margin_sse(start_date=today, end_date=today)
+        stock_margin_sse_df = ak.stock_margin_sse(start_date=day, end_date=day)
         margin_sse = stock_margin_sse_df["融券余量金额"]
     except ValueError:
-        print("no today's data")
+        if day == 'today':
+            print("no today's data")
+        else:
+            print(f"no {day}'s data")
+        return
 
     try:
-        stock_margin_szse_df = ak.stock_margin_szse(date=today)
+        stock_margin_szse_df = ak.stock_margin_szse(date=day)
         margin_szse = stock_margin_szse_df["融券余额"]
     except ValueError:
-        print("no today's data")
+        if day == 'today':
+            print("no today's data")
+        else:
+            print(f"no {day}'s data")
+        return
 
     stock_sse_summary_df = ak.stock_sse_summary()
-    stock_szse_summary_df = ak.stock_szse_summary(date=today)
+    stock_szse_summary_df = ak.stock_szse_summary(date=day)
 
     num_sse = stock_sse_summary_df["股票"].iloc[4]
     value_sse = stock_sse_summary_df["股票"].iloc[1]
@@ -68,4 +77,5 @@ def quick_data():
 
 
 if __name__ == "__main__":
-    quick_data()
+    # quick_data()
+    short('20220617')
