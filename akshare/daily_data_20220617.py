@@ -40,9 +40,9 @@ def short(day="today"):
         margin_sse = stock_margin_sse_df["融券余量金额"]
     except ValueError:
         if day == 'today':
-            print("no today's data")
+            print("ShangHai no today's data")
         else:
-            print(f"no {day}'s data")
+            print(f"ShangHai no {day}'s data")
         return
 
     try:
@@ -50,9 +50,9 @@ def short(day="today"):
         margin_szse = stock_margin_szse_df["融券余额"]
     except ValueError:
         if day == 'today':
-            print("no today's data")
+            print("ShenZhen no today's data")
         else:
-            print(f"no {day}'s data")
+            print(f"ShenZhen no {day}'s data")
         return
 
     stock_sse_summary_df = ak.stock_sse_summary()
