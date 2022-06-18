@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+<!--   <title>深交所主页</title>   -->
+<script>
+    var title = '<a href="./" class="CurrChnlCls">交易持仓汇总统计</a> ';
+    title = title.substring(title.indexOf('>')+1,title.indexOf('</'));
+    title = title === '期权子网站' ? '' : '-' + title; 
+    document.write('<title>期权子网站'+ title +'</title>')
+</script>
+<script>
+  if(location.protocol == 'https:'){
+    document.write('<link href="https://res.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }else{
+    document.write('<link href="http://res.static.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="Web, 26 Feb 1997 08:21:57 GMT">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="author" content="bond.szse.cn">
+<meta name="description" content="期权子网站">
+<meta name="keywords" content="期权子网站">
+<meta name="renderer" content="webkit">
+<meta name="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="google" value="notranslate">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="screen-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="browermode" content="application">
+<meta name="x5-orientation" content="portrait">
+<meta name="HandheldFriendly" content="true">
+<script type="text/javascript">
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;//android终端
+
+	function addElementMeta(name,  content) {
+		var head = document.getElementsByTagName('head')[0];
+		var meta = document.createElement('meta');
+
+		meta.setAttribute('name', name);
+		meta.setAttribute('content', content);
+		head.appendChild(meta);
+	}
+	if(isAndroid) {
+		addElementMeta('x5-fullscreen', 'true');
+		addElementMeta('x5-page-mode', 'app');
+	}
+</script>
+<script>
+  (function() {
+    var _versionDate = new Date().getTime();
+    if(location.protocol == 'https:'){
+      var _path = 'https://res.szse.cn';
+    }else{
+      var _path = 'http://res.static.szse.cn';
+    }
+    _path = _path.replace(".static.", ".");
+    //var _path = 'http://res.szse.cn';
+    //document.write( " <script src='" + _path + "/common/js/first.js?random=" + _versionDate + "'> <\/script> ");
+    var _host = 'http://www.szse.cn';
+    if(location.protocol == 'https:'){
+        _host = 'https://www.szse.cn';
+    }
+    document.write( " <script src='" + _host + "/szsePath.js?random=" + _versionDate + "'> <\/script> "
+    +" <script src='" + _path + "/common/js/concatversion.js?random=" + _versionDate + "'> <\/script> ");
+  }());
+</script>
+<!-- <script src="http://res.static.szse.cn/lib/td-h5-website-sdk.js" td-appid="56FD3F8B428A47FAB9A3F2191498B29D"></script> -->
+<script>
+    addComCssFile();
+    changeVertion('/OPT/common/css/common.css', 'css');
+</script>
+    <script>
+        changeVertion('/modules/report/css/report.css', 'css');
+    </script>
+    <style>
+        .footer-copyright{
+            position: relative;
+            visibility: hidden;
+        }
+    </style>
+</head>
+	<body>
+	<div class="g-contentWrap">
+            <!--[if lt IE 9]>
+	<div class="low_version">
+	 	<div class="g-container inner">
+		    <div class="tip">系统检测到您正在使用IE8以下内核的浏览器，不能实现完美体验，请及时更新浏览器版本！</div>
+		    <span class="low_close">&times;</span>
+		</div>
+	</div>
+<style type="text/css">
+.top-header-container{
+  margin-top:30px;
+}
+</style>
+    <script src="http://res.static.szse.cn/lib/ie8fix/html5shiv/3.7.3/html5shiv.min.js"></script>       
+    <script src="http://res.static.szse.cn/lib/ie8fix/Respond-master/dest/respond.min.js"> </script>
+    <script src="http://res.static.szse.cn/lib/ie8fix/es5-shim/4.2.0/es5-shim.min.js"></script>
+    <script src="http://res.static.szse.cn/lib/ie8fix/JSON/3.3.2/json3.min.js"></script>
+    <script src="http://res.static.szse.cn/lib/ie8fix/iefix/ie8fix.js"></script>
+<![endif]-->
+<div class="top-header-container clearfix  hidden-xs">
+    <div class="g-container">
+        <div class="pull-right top-menu-list-wrap">
+            <div class="top-menu-list">
+                <div class="item item-home" style="display:block;"><a class="link-home" href="/">深交所官网</a></div>
+                <div class="item item-loginregist">
+                    <a class="link-login" href="javascript:void(0)">个人中心</a>
+                   <!--  <span class="sepline">|</span>
+                    <a class="link-reg" href="/modules/regist/views/index.html">注册</a> -->
+                </div>
+                 <!-- <div class="item">
+                    <div class="languageswitch">
+                        <a class="btn-goenglish" href="http://www.szse.cn/main/en/" target="_blank">English</a>
+                    </div>
+                </div>-->
+                <div class="item">
+                    <div class="languageswitch" >
+                        <a class="big5OrSimp" href="">繁体中文</a>
+                    </div>
+                    <script>
+                      changeVertion('/common/js/toggleBig5.js','js');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="navbar szse-navbar szse-navbar-pc qq-navbar-pc">
+    <div class="g-container clearfix">
+        <div class="navbar-headers ">
+            <a href="/" class="navbar-brand">
+               <img class="nav-logo" src="http://res.static.szse.cn/common/icon/logo.png" alt="深交所" />
+            </a>
+            <h3 class="childsite-logo-tit">
+                <a href="" class="itemlink-qq">期权子网站</a>
+            </h3>
+        </div>
+        <div class="top-search-el">
+            <form class="search-form" action target="frameFile">
+                <input id="pcSearchInput" type="search" maxlength="100" class="search-input need-repaired-placeholder" autocomplete="off" placeholder="请输入关键字" />
+                <input type="text" style="display: none;" />
+                <span class="clear-keyword">&times;</span>
+                <button class="search-btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                <!-- <input type="button" class="search-btn" value="搜索" /> -->
+            </form>
+            <div class="search-hot" style="display:none;">
+                <script>
+                var hotWords = [];
+
+                
+                        hotWords.push('预约披露'); 
+                
+                        hotWords.push('十九大'); 
+                
+                        hotWords.push('增持'); 
+                
+                        hotWords.push('监管关注'); 
+                
+                        hotWords.push('年报'); 
+                
+                </script>
+            </div>
+        </div>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse navbar-wrap" role="navigation">
+       <div class="g-container">
+            <div class="nav-box bondnav-box">
+                <!-- <ul class="nav navbar-nav">
+             <li chnlcode="optionIndex">
+                              <a datapath="index" href="/index/index.html"><i></i>首页</a>
+                 </li>
+               <li chnlcode="businessRules">
+                              <a datapath="rules" href="/rules/optrules/index.html"><i></i>业务规则</a>
+                 </li>
+                <li class="active" chnlcode="quotationData">
+                              <a datapath="quotation" href="/quotation/contract/index.html"><i></i>行情数据</a>
+                 </li>
+               <li chnlcode="msgBulletin">
+                              <a datapath="notice" href="/notice/notify/index.html"><i></i>消息公告</a>
+                 </li>
+               <li chnlcode="truerehearsal">
+                              <a datapath="errorpath" href="http://www.szse.cn/rehearsal/index.html"><i></i>全真演练</a>
+                 </li>
+               <li chnlcode="optMaketservice_link">
+                              <a datapath="service" href="https://e.szse.cn/dist"><i></i>市场服务</a>
+                 </li>
+               <li chnlcode="businessArea_link">
+                              <a datapath="errorpath" href="https://sso.szse.cn/sso/login?loa=40&auth=40&service=https%3A%2F%2Fbiz.szse.cn%2Foption%2Findex.html"><i></i>期权专区</a>
+                 </li>
+  </ul>                   
+
+ -->
+                <script>
+                  try {
+                    navMenuAJAX('/option/navMenu/index.html', '/option/navMenu/index.html', 'pcMenu', 'www', true);
+                  } catch (e) { }
+                </script>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="navbar-fixed-top navmobile szse-navbar szse-navbar-mobile">
+    <div class="mobile-search">
+        <div class="mobile-search_container">
+            <div class="mobile-search_form">
+                <div class="top-search-el">
+                    <div class="search-form">
+                        <form action target="frameFile" id="searh_form">
+                            <input id="mobileSearchInput" type="search" class="mobile-search_input search-input need-repaired-placeholder" placeholder="请输入关键字" />
+                            <input type="text" style="display: none;" />
+                            <iframe name="frameFile" style="display: none;"></iframe>
+                        </form>
+                        <!-- <input type="button" class="search-btn" value="搜索" /> -->
+                    </div>
+                </div>
+                <!-- <input class="mobile-search_input" type="text" name="topbarSearch" placeholder="搜索行情/公告/其他信息" /> -->
+                <img class="mobile-search_close" src="http://res.static.szse.cn/common/icon/mobile-search_close.png" alt="search close" />
+            </div>
+        </div>
+    </div>
+    <div id="dl-menu" class="dl-menuwrapper">
+        <a class="navipone_block"><span class="glyphicon glyphicon-search"></span></a>
+        <a class="navbar-brand" href="/"><img src="http://res.static.szse.cn/common/icon/logo.png" alt="深交所" /></a>
+        <button class="dl-trigger dl-phmenu"></button>
+        <script>
+          try {
+            navMenuAJAX('/option/navMenu/index.html', '/option/navMenu/index.html', 'mobileMenu', 'www');
+          } catch (e) { }
+        </script>
+        <script>
+            changeVertion('/common/js/toggleBig5.js','js');
+        </script>
+    </div>
+</div>
+            <div class="g-locationnav">
+    <div class="banner-wrap">
+        <img src="http://res.static.szse.cn/OPT/common/images/banner.jpg" width="100%" />
+    </div>
+    <div class="g-container">
+        <div class="g-banner-txt">
+            <h2 class="hidden-xs">交易持仓汇总统计</h2>
+            <p>
+                <img src="http://res.static.szse.cn/common/icon/er-banneradr.png" />位置：
+                <a href="../../../" class="CurrChnlCls">期权子网站</a>/<a href="../../" class="CurrChnlCls">行情数据</a>/<a href="../" class="CurrChnlCls">统计数据</a>/<a href="./" class="CurrChnlCls">交易持仓汇总统计</a>
+            </p>
+        </div>
+    </div>
+</div>
+                  <div class="g-container-wrap">
+                    <div class="g-container">
+                        <div class="g-sidemenu">
+                                             
+
+<div class="menu-container">
+	<h2 class="title">期权子网站</h2>
+	<div class="side-menu-container">
+		<ul class="side-menu-con">
+                                  
+                                                            <li class="level1" type="0" chnlcode="businessRules">
+             
+	         			     			        <a> 
+			     			  					<div>业务规则
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level2 last" type="0" chnlcode="optRules_hidden">
+             
+	         			       			            <a href="/option/rules/optrules/index.html">
+			       			  					<div>业务规则
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                          <li class="level2 last" type="0" chnlcode="businessGuide_hidden">
+             
+	         			       			            <a href="/option/rules/guide/index.html">
+			       			  					<div>业务指南
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+                             
+                                                          <li class="level1 active" chnlcode="quotationData">
+            
+	         			     			        <a class="dropup">
+			     			  					<div>行情数据
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                           <li class="level2" type="0" chnlcode="contractInfo">
+             
+	         			     			        <a> 
+			     			  					<div>合约信息
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level3 last" type="0" chnlcode="daycontract">
+             
+	         			       			            <a href="/option/quotation/contract/daycontract/index.html">
+			       			  					<div>当日合约
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                          <li class="level3 last" type="0" chnlcode="contractchange">
+             
+	         			       			            <a href="/option/quotation/contract/contractchange/index.html">
+			       			  					<div>合约变更
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+    				      					                         <li class="level2 active" chnlcode="statisticaldata">
+            
+	         			     			        <a class="dropup">
+			     			  					<div>统计数据
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                         <li class="level3 active last" chnlcode="tabulatestatistics">
+            
+	         			       			            <a href="/option/quotation/statistical/tabulate/index.html">
+			       			  					<div>交易持仓汇总统计
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                           <li class="level3" type="0" chnlcode="rankingstatidtics">
+             
+	         			     			        <a> 
+			     			  					<div>交易持仓排名统计
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level4 last" type="0" chnlcode="dealrank">
+             
+	         			       			            <a href="/option/quotation/statistical/ranking/dealrank/index.html">
+			       			  					<div>交易排名统计
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                          <li class="level4 last" type="0" chnlcode="interestrank">
+             
+	         			       			            <a href="/option/quotation/statistical/ranking/interestrank/index.html">
+			       			  					<div>持仓排名统计
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+    				      					                          <li class="level3 last" type="0" chnlcode="trafficstatistice">
+             
+	         			       			            <a href="/option/quotation/statistical/traffic/index.html">
+			       			  					<div>行权交收统计
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+    				      					                           <li class="level2" type="0" chnlcode="marketdelay">
+             
+	         			     			        <a> 
+			     			  					<div>延时行情
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level3 last" type="0" chnlcode="delaymarketpricemap">
+             
+	         			       			            <a href="/option/quotation/delay/marketprice/index.html">
+			       			  					<div>延时行情价量图
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                          <li class="level3 last" type="0" chnlcode="riskIndicator">
+             
+	         			       			            <a href="/option/quotation/delay/risk/index.html">
+			       			  					<div>合约风险指标
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+    				      				</ul>
+					  </li>
+                             
+                                                            <li class="level1" type="0" chnlcode="msgBulletin">
+             
+	         			     			        <a> 
+			     			  					<div>消息公告
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level2 last" type="0" chnlcode="businessnotify_hidden">
+             
+	         			       			            <a href="/option/notice/notify/index.html">
+			       			  					<div>业务通知
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      					                           <li class="level2" type="0" chnlcode="msgRemind">
+             
+	         			     			        <a> 
+			     			  					<div>提醒信息
+					
+					  					  <b class="caret"></b>
+					  					</div>
+				</a>
+				
+								<ul>
+				      				      					                          <li class="level3 last" type="0" chnlcode="exporationcontractremind">
+             
+	         			       			            <a href="/option/notice/remind/contractremind/index.html">
+			       			  					<div>到期合约提醒
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+    				      					                          <li class="level2 last" type="0" chnlcode="optionOrgan">
+             
+	         			       			            <a href="/option/notice/optionOrgan/index.html">
+			       			  					<div>开通股票期权业务交易权限的机构名单
+					
+					  					</div>
+				</a>
+				
+					  </li>
+    				      				</ul>
+					  </li>
+                             
+                                                           <li class="level1 last" type="11" chnlcode="truerehearsal">
+             
+	         			       			           <a href="http://www.szse.cn/rehearsal/index.html" target='_blank'>
+			       			  					<div>全真演练
+					
+					  					</div>
+				</a>
+				
+					  </li>
+                             
+                                                           <li class="level1 last" type="11" chnlcode="optMaketservice_link">
+             
+	         			       			           <a href="https://e.szse.cn/dist" target='_blank'>
+			       			  					<div>市场服务
+					
+					  					</div>
+				</a>
+				
+					  </li>
+                             
+                                                           <li class="level1 last" type="11" chnlcode="businessArea_link">
+             
+	         			       			           <a href="https://sso.szse.cn/sso/login?loa=40&auth=40&service=https%3A%2F%2Fbiz.szse.cn%2Foption%2Findex.html" target='_blank'>
+			       			  					<div>期权专区
+					
+					  					</div>
+				</a>
+				
+					  </li>
+                             
+         		</ul>
+	</div>
+</div>
+
+
+                        </div>
+                        <div class="g-content">
+                            <div class="g-conbox">
+                                <div class="report-container" data-s-catalog-id="option_jycchztj" data-s-data-url=""></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                  var curCatalogId = 'option_jycchztj';
+                </script>
+
+    </div>
+	
+<script>
+  try {
+    navMenuAJAX('/option/footerWrap/index.html', '/option/footerWrap/index.html', 'footerMenu', 'www');
+  } catch (e) {
+
+  }
+  addComJsFile();
+  changeVertion('/OPT/common/js/common.js', 'js');
+</script>
+        <script>
+    changeVertion('/modules/report/js/report_new.js','js');
+    changeVertion('/modules/report/js/detail_report.js','js');
+    changeVertion('/modules/report/js/common_report.js','js');
+</script>
+        <script>
+             changeVertion('/OPT/common/js/resetcss.js','js');
+        </script>
+	</body>
+</html>
