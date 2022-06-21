@@ -1,5 +1,6 @@
 from math import floor
 import datetime
+import time
 
 from black import main
 import akshare as ak
@@ -73,11 +74,13 @@ def short(day="today"):
 def num(m="all", day="today"):
     if day == "today":
         day = datetime.date.today().strftime("%Y%m%d")
-
-    stock_sse_summary_df = ak.stock_sse_summary()
-    stock_szse_summary_df = ak.stock_szse_summary(date=day)
-    num_sse = int(stock_sse_summary_df["股票"].iloc[4])
-    num_szse = stock_szse_summary_df["数量"].iloc[0]
+    try:
+        stock_sse_summary_df = ak.stock_sse_summary()
+        stock_szse_summary_df = ak.stock_szse_summary(date=day)
+        num_sse = int(stock_sse_summary_df["股票"].iloc[4])
+        num_szse = stock_szse_summary_df["数量"].iloc[0]
+    except IndexError:
+        return "no " + day + "'s data"
     if m == "all":
         return (num_sse, num_szse)
     elif m == "sh":
@@ -88,14 +91,17 @@ def num(m="all", day="today"):
 
 def quick_data():
     today = datetime.date.today().strftime("%Y%m%d")
+    t = time.strftime("%H:%M")
     path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
     with open(path + "\\" + today + "_instant.txt", "a", encoding="utf-8") as f:
+        f.write(t + "\n")
         f.write("北上资金： " + str(north()) + "\n")
         f.write("历史新高： " + str(len(list(his_high()))) + " " + " ".join(list(his_high())) + "\n")
         f.write("一年新低： " + str(len(list(year_low()))) + " " + " ".join(year_low()) + "\n")
         f.write("成交比： " + str(trade_ratio()) + "\n")
         f.write("上证股票数量： " + str(num("sh")) + "\n")
         f.write("深证股票数量： " + str(num("sz")) + "\n")
+        f.write("\n")
 
 
 if __name__ == "__main__":
