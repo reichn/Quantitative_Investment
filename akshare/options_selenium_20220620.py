@@ -1,6 +1,7 @@
 from selenium import webdriver
 from time import sleep
 import datetime
+import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver import ChromeOptions
@@ -47,12 +48,14 @@ sz_call_300 = browser.find_element(
 
 
 today = datetime.date.today().strftime("%Y%m%d")
+t = time.strftime("%H:%M")
 path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
 with open(path + "\\" + today + "_option.txt", "a", encoding="utf-8") as f:
+    f.write(t + "\n")
     f.write("50ETF认沽认购比: " + ratio_50 + "\n")
     f.write(
         "300ETF期权: "
         + " ".join([sh_put_300[:-3], sh_call_300[:-3], sz_put_300, sz_call_300]).replace(",", "")
     )
-
+    f.write("\n")
 browser.close()
