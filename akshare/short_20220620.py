@@ -2,6 +2,8 @@ from daily_data_20220617 import short
 import datetime
 import time
 
+""" 默认值是 昨天 """
+
 if __name__ == "__main__":
     t = datetime.date.today().strftime("%Y%m%d")
     y = (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y%m%d")
@@ -16,5 +18,6 @@ if __name__ == "__main__":
     path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
     with open(path + "\\" + d + "_short.txt", "a", encoding="utf-8") as f:
         f.write(ti + "\n")
-        f.write("融券、总市值、上市股票数量: " + str(short(d)) + "\n")
+        f.write("融券、总市值、上市股票数量: " + str(short(d)[0]) + "\n")
+        f.write("融资余额: " + str(short(d)[1]) + "\n")
         f.write("\n")

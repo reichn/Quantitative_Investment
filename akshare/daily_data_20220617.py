@@ -43,6 +43,7 @@ def short(day="today"):
     try:
         stock_margin_sse_df = ak.stock_margin_sse(start_date=day, end_date=day)
         margin_sse = stock_margin_sse_df["融券余量金额"].iloc[0]
+        rongzi_sse = stock_margin_sse_df["融资余额"].iloc[0] / 1e8
     except ValueError:
         if day == "today":
             print("ShangHai no today's data")
@@ -53,6 +54,7 @@ def short(day="today"):
     try:
         stock_margin_szse_df = ak.stock_margin_szse(date=day)
         margin_szse = stock_margin_szse_df["融券余额"].iloc[0]
+        rongzi_szse = stock_margin_szse_df["融资余额"].iloc[0]
     except ValueError:
         if day == "today":
             print("ShenZhen no today's data")
@@ -68,7 +70,10 @@ def short(day="today"):
     num_szse = stock_szse_summary_df["数量"].iloc[0]
     value_szse = stock_szse_summary_df["总市值"].iloc[0] / 1e8
 
-    return (margin_sse, margin_szse, value_sse, value_szse, num_sse, num_szse)
+    return (margin_sse, margin_szse, value_sse, value_szse, num_sse, num_szse), (
+        rongzi_sse,
+        rongzi_szse,
+    )
 
 
 def num(m="all", day="today"):
