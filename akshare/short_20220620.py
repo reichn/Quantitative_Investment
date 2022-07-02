@@ -15,8 +15,8 @@ if __name__ == "__main__":
         d = t
     elif d == "2":
         d = y
-    else:
-        d = t  # 默认值
+    # else:
+    # d = t  # 默认值
 
     path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
     with open(path + "\\" + d + "_short.txt", "a", encoding="utf-8") as f:
