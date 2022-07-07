@@ -46,9 +46,9 @@ def short(day="today"):
         rongzi_sse = stock_margin_sse_df["融资余额"].iloc[0] / 1e8
     except ValueError:
         if day == "today":
-            print("ShangHai no today's data")
+            print("Shanghai no today's data")
         else:
-            print(f"ShangHai no {day}'s data")
+            print(f"Shanghai no {day}'s data")
         return
 
     try:
@@ -57,9 +57,9 @@ def short(day="today"):
         rongzi_szse = stock_margin_szse_df["融资余额"].iloc[0]
     except ValueError:
         if day == "today":
-            print("ShenZhen no today's data")
+            print("Shenzhen no today's data")
         else:
-            print(f"ShenZhen no {day}'s data")
+            print(f"Shenzhen no {day}'s data")
         return
 
     stock_sse_summary_df = ak.stock_sse_summary()

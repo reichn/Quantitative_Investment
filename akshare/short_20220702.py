@@ -9,12 +9,12 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 
-START = date(2021, 1, 1)
-END = date(2021, 9, 22)
+START = date(2014, 1, 1)
+END = date(2015, 1, 1)
 DIR = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
 
 if __name__ == "__main__":
-    with open(DIR + "\\" + "2021_short.csv", "a", encoding="utf-8") as f:
+    with open(DIR + "\\" + "2014_short.csv", "a", encoding="utf-8") as f:
         f.write(time.strftime("%H:%M") + "\n")
         for day in daterange(START, END):
             try:

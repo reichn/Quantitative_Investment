@@ -15,7 +15,8 @@ if __name__ == "__main__":
         d = t
     elif d == "2":
         d = y
-    # else:
+    elif d == "":
+        d = t
     # d = t  # 默认值
 
     path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
