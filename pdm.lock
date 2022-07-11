@@ -994,7 +994,7 @@ summary = "Backport of pathlib-compatible object wrapper for zip files"
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:9d6be9600df639c159c6bceabab2caade756955dc035ad0feb98aeb4c2ecb82a"
+content_hash = "sha256:06214ad57898fa23644753b3d2214450f7ec7f05095e08a3d6de07732efe8a42"
 
 [metadata.files]
 "akshare 1.6.15" = [
