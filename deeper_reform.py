@@ -4,27 +4,48 @@ import re
 import datetime as dt
 
 
-def get_dates():
-    url = "https://zh.m.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E5%85%A8%E9%9D%A2%E6%B7%B1%E5%8C%96%E6%94%B9%E9%9D%A9%E5%A7%94%E5%91%98%E4%BC%9A"
+def get_dates(method="local"):
+    if method != "local":
+        url = "https://zh.m.wikipedia.org/wiki/%E4%B8%AD%E5%A4%AE%E5%85%A8%E9%9D%A2%E6%B7%B1%E5%8C%96%E6%94%B9%E9%9D%A9%E5%A7%94%E5%91%98%E4%BC%9A"
 
-    proxy = {"https": "127.0.0.1:7890"}
-    r = requests.get(url, proxies=proxy)
-    p = re.compile("\d{4}年\d{1,2}月\d{1,2}日")
+        proxy = {"https": "127.0.0.1:7890"}
+        r = requests.get(url, proxies=proxy)
+        p = re.compile("\d{4}年\d{1,2}月\d{1,2}日")
 
-    a = p.findall(r.text)
-    print(a)
-    with open("deeper_reform.txt", "a") as f:
+        a = p.findall(r.text)
+        print(a)
+
+    else:
+        with open("中央全面深化改革委员会.txt", "r", encoding="utf-8") as f:
+            r = f.read()
+            p = re.compile("\d{4}年\d{1,2}月\d{1,2}日")
+            a = p.findall(r)
+
+    with open("deeper_reform.txt", "w") as f:
         for date in set(a):
             f.write(date + "\n")
 
 
 def parse_dates():
-    with open("deeper_reform.txt", "r") as f:
-        all = f.read()
+    with open("deeper_reform_sort.txt", "r") as f:
+        all_ = f.read()
     all_dt = []
-    for date in all.split():
+    for date in all_.split():
         all_dt.append(dt.datetime.strptime(date, "%Y年%m月%d日"))
     return sorted(all_dt)
+
+
+def sort_datefile():
+    with open("deeper_reform.txt", "r") as f:
+        all_ = f.read()
+    all_dt = []
+    for date in all_.split():
+        all_dt.append(dt.datetime.strptime(date, "%Y年%m月%d日"))
+
+    with open("deeper_reform_sort.txt", "w") as f:
+        for d in sorted(all_dt):
+            t = d.strftime("%Y年%m月%d日")
+            f.write(t + "\n")
 
 
 def month_each():
@@ -37,12 +58,18 @@ def month_each():
     print("各月份开会次数：", month)
 
 
-if __name__ == "__main__":
-    # get_dates()
-    # month_each()
+def gap_between():
     all_dt = parse_dates()
     gap_between = []
     for i in range(len(all_dt) - 1):
         t = all_dt[i + 1] - all_dt[i]
         gap_between.append(t.days)
+    print(gap_between)
     print(sorted(gap_between))
+
+
+if __name__ == "__main__":
+    get_dates("local")
+    month_each()
+    gap_between()
+    sort_datefile()
