@@ -61,14 +61,19 @@ ema12_7 = 26.9
 ema26_7 = 28.28
 dea_7 = -0.55
 
+close8 = 26.64
+ema12_8 = 26.53
+ema26_8 = 27.8
+dea_8 = -0.69
+
 if __name__ == "__main__":
     "待定 中信建投 7月收盘价和8月收盘价"
     tests()
     print("passed tests")
 
-    close8 = range(35, 40)  # 36金叉
-    macd_8 = []
-    for i in range(len(close8)):
-        macd_8.append(fn(ema12_7, ema26_7, dea_7, close8[i]))
+    close9 = range(30, 35)  # 36金叉 -> 35金叉
+    macd_9 = []
+    for i in range(len(close9)):
+        macd_9.append(fn(ema12_8, ema26_8, dea_8, close9[i]))
 
-    print(macd_8)
+    print(macd_9)
