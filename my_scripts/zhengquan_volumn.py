@@ -1,4 +1,8 @@
 import akshare as ak
+import csv
+import datetime as dt
+import matplotlib.pyplot as plt
+from collections import Counter
 
 
 def to_csv():
@@ -12,6 +16,20 @@ def to_csv():
     b.to_csv("zhengquan_volumn_2022.csv")
 
 
+def years_fenbu():
+    with open("zhengquan_volumn_2022.csv", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        dates = []
+        for row in reader:
+            dates.append(row[1])
+
+    dates = dates[1:]
+    dates_dt = [dt.datetime.strptime(day, "%Y-%m-%d") for day in dates]
+    years = [day.year for day in dates_dt]
+    out = Counter(years)
+    print(out)
+
+
 if __name__ == "__main__":
     # to_csv()
-    pass
+    years_fenbu()
