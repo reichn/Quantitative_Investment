@@ -2,6 +2,7 @@ from math import floor
 import datetime
 import time
 
+from black import main
 import akshare as ak
 
 import warnings
@@ -96,8 +97,7 @@ def num(m="all", day="today"):
 def quick_data():
     today = datetime.date.today().strftime("%Y%m%d")
     t = time.strftime("%H:%M")
-    # path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
-    path = r"D:\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
+    path = r"D:\GRC\我的坚果云\data_xlsx 数据记录\20220617 Daily data"
     with open(path + "\\" + today + "_instant.txt", "a", encoding="utf-8") as f:
         f.write(t + "\n")
         f.write("北上资金： " + str(north()) + "\n")
