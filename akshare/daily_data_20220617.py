@@ -83,7 +83,7 @@ def num(m="all", day="today"):
         stock_szse_summary_df = ak.stock_szse_summary(date=day)
         num_sse = int(stock_sse_summary_df["股票"].iloc[4])
         num_szse = stock_szse_summary_df["数量"].iloc[0]
-    except IndexError:
+    except (IndexError, ValueError):
         return "no " + day + "'s data"
     if m == "all":
         return (num_sse, num_szse)
