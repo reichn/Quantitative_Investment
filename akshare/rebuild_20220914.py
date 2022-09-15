@@ -65,7 +65,25 @@ def del_blank_line():
                 fi.write(line)
 
 
+def change_date_format():
+    with open("short_recover_20220915.txt", "r", encoding="utf-8") as fi:
+        lines = fi.readlines()
+
+    with open("new_short_recover_20220915.txt", "w", encoding="utf-8") as fi:
+        for line in lines:
+            year = line[0:4]
+            month = line[4:6]
+            day = line[6:8]
+            if month[0] == "0":
+                month = month[1]
+            if day[0] == "0":
+                day = day[1]
+            fi.write(year + "-" + month + "-" + day + " " + line[8:])
+
+
 if __name__ == "__main__":
     # instant_files()
     # short_files()
     # del_blank_line()
+    # change_date_format()
+    pass
