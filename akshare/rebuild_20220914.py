@@ -55,6 +55,17 @@ def short_files():
                                 fi.write(str(date) + " " + "\n")
 
 
+def del_blank_line():
+    with open("short_recover_20220915.txt", "r", encoding="utf-8") as fi:
+        lines = fi.readlines()
+
+    with open("short_recover_20220915.txt", "w", encoding="utf-8") as fi:
+        for line in lines:
+            if len(line) != 1:
+                fi.write(line)
+
+
 if __name__ == "__main__":
     # instant_files()
-    short_files()
+    # short_files()
+    # del_blank_line()
