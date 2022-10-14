@@ -20,7 +20,8 @@ def margin(day=''):
     if not day:
         day = today
     margin_ = pro.query('margin', trade_date=day, exchange_id='')
-    return margin_[['trade_date', 'exchange_id', 'rqye']]
+    result = margin_[['trade_date', 'exchange_id', 'rqye']]
+    return int(result.iloc[0][0]), result.iloc[0][2], result.iloc[1][2] / 1e8
 
 
 def market_value(day=''):
@@ -30,7 +31,7 @@ def market_value(day=''):
         day = today
     # df = pro.daily_info(trade_date=day, exchange="SH", fields="trade_date,ts_name,com_count,total_mv")
     df1 = pro.daily_info(trade_date=day, fields="trade_date,ts_name,ts_code, com_count,total_mv")
-
+    # print(df1)
     sh_a = df1.loc[df1['ts_name'] == '上海A股']
     sh_b = df1.loc[df1['ts_name'] == '上海B股']
     sh_kc = df1.loc[df1['ts_name'] == '科创板']
@@ -44,7 +45,19 @@ def market_value(day=''):
     return int(day), sh_num, sz_num, sh_value, sz_value
 
 
+def rong_zi(day=''):
+    # 融资余额
+    today = dt.date.today().strftime("%Y%m%d")
+    if not day:
+        day = today
+
+    margin_ = pro.query('margin', trade_date=day, exchange_id='')
+    result = margin_[['trade_date', 'exchange_id', 'rzye']]
+    return int(result.iloc[0][0]), result.iloc[0][2] / 1e8, result.iloc[1][2] / 1e8
+
+
 if __name__ == "__main__":
     # print(stocks_num())
-    # print(margin('20221012'))
-    print(market_value('20221013'))
+    # print(margin('20221013'))
+    # print(market_value('20221013'))
+    print(rong_zi('20221013'))
