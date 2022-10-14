@@ -1,3 +1,5 @@
+from math import floor
+
 import tushare as ts
 import datetime as dt
 
@@ -56,8 +58,46 @@ def rong_zi(day=''):
     return int(result.iloc[0][0]), result.iloc[0][2] / 1e8, result.iloc[1][2] / 1e8
 
 
+def trade_ratio(day=''):
+    # 成交比
+    today = dt.date.today().strftime("%Y%m%d")
+    if not day:
+        day = today
+    df = pro.daily(**{
+        "ts_code": "",
+        "trade_date": day,
+        "start_date": "",
+        "end_date": "",
+        "offset": "",
+        "limit": ""
+    }, fields=[
+        "ts_code",
+        "trade_date",
+        "pct_chg",
+        "amount"
+    ])
+    df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
+    N = df_sort.shape[0]
+    half = floor(N / 2)
+    first_sum = df_sort["amount"][:half].sum()
+    second_sum = df_sort["amount"][half + 1:].sum()
+    ratio = (first_sum - second_sum) / df_sort["amount"].sum()
+    return str(ratio * 100)[:6] + '%'
+
+
+def north(day=''):
+    # 北向资金
+    today = dt.date.today().strftime("%Y%m%d")
+    if not day:
+        day = today
+    df = pro.query('moneyflow_hsgt', trade_date=day)
+    return int(df['trade_date']), float(df['north_money']) / 100
+
+
 if __name__ == "__main__":
     # print(stocks_num())
     # print(margin('20221013'))
     # print(market_value('20221013'))
-    print(rong_zi('20221013'))
+    # print(rong_zi('20221013'))
+    # print(north('20221013'))
+    print(trade_ratio('20221013'))
