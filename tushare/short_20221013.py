@@ -1,7 +1,8 @@
+import datetime as dt
+import time
 from math import floor
 
 import tushare as ts
-import datetime as dt
 
 ts.set_token('a8e773947efb1cf732c5258f45b3de232206cd541706bce0fb447779')
 pro = ts.pro_api()
@@ -22,6 +23,8 @@ def margin(day=''):
     if not day:
         day = today
     margin_ = pro.query('margin', trade_date=day, exchange_id='')
+    if margin_.empty:
+        return int(day), 'no data', 'no data'
     result = margin_[['trade_date', 'exchange_id', 'rqye']]
     return int(result.iloc[0][0]), result.iloc[0][2], result.iloc[1][2] / 1e8
 
@@ -31,14 +34,16 @@ def market_value(day=''):
     today = dt.date.today().strftime("%Y%m%d")
     if not day:
         day = today
-    # df = pro.daily_info(trade_date=day, exchange="SH", fields="trade_date,ts_name,com_count,total_mv")
-    df1 = pro.daily_info(trade_date=day, fields="trade_date,ts_name,ts_code, com_count,total_mv")
+    df1 = pro.daily_info(trade_date=day,
+                         fields="trade_date,ts_name,ts_code, com_count,total_mv")
     # print(df1)
     sh_a = df1.loc[df1['ts_name'] == '上海A股']
     sh_b = df1.loc[df1['ts_name'] == '上海B股']
     sh_kc = df1.loc[df1['ts_name'] == '科创板']
-    sh_num = int(sh_a['com_count']) + int(sh_b['com_count']) + int(sh_kc['com_count'])
-    sh_value = float(sh_a['total_mv']) + float(sh_b['total_mv']) + float(sh_kc['total_mv'])
+    sh_num = int(sh_a['com_count']) + int(sh_b['com_count']) + int(
+        sh_kc['com_count'])
+    sh_value = float(sh_a['total_mv']) + float(sh_b['total_mv']) + float(
+        sh_kc['total_mv'])
 
     sz = df1.loc[df1['ts_name'] == '深圳市场']
     sz_num = int(sz['com_count'])
@@ -54,8 +59,11 @@ def rong_zi(day=''):
         day = today
 
     margin_ = pro.query('margin', trade_date=day, exchange_id='')
+    if margin_.empty:
+        return int(day), 'no data', 'no data'
     result = margin_[['trade_date', 'exchange_id', 'rzye']]
-    return int(result.iloc[0][0]), result.iloc[0][2] / 1e8, result.iloc[1][2] / 1e8
+    return int(result.iloc[0][0]), result.iloc[0][2] / 1e8, result.iloc[1][
+        2] / 1e8
 
 
 def trade_ratio(day=''):
@@ -86,12 +94,38 @@ def trade_ratio(day=''):
 
 
 def north(day=''):
-    # 北向资金
+    # 北向资金 每天18-20点更新
     today = dt.date.today().strftime("%Y%m%d")
     if not day:
         day = today
     df = pro.query('moneyflow_hsgt', trade_date=day)
+    if df.empty:
+        return int(day), 'no north data'
     return int(df['trade_date']), float(df['north_money']) / 100
+
+
+def data():
+    t = time.strftime("%H:%M")
+    today = dt.date.today().strftime("%Y%m%d")
+    today1 = dt.date.today().strftime("%Y-%m-%d %a")
+
+    north_ = north(today)[1:]
+    sh_num, sz_num, sh_value, sz_value = market_value(today)[1:]
+    sh_margin, sz_margin = margin(today)[1:]
+    sh_rz, sz_rz = rong_zi(today)[1:]
+
+    path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    with open(path + "\\" + today + "_data.txt", "a", encoding="utf-8") as f:
+        f.write(today1 + " " + t + "\n")  # date + week + time
+        f.write("北上资金： " + str(north_) + "\n")
+        # f.write("历史新高： " + str(len(list(his_high()))))
+        # f.write("一年新低： " + str(len(list(year_low()))))
+        f.write("成交比： " + trade_ratio() + "\n")
+        f.write("股票数量： " + str(sh_num) + " " + str(sz_num) + "\n")
+        f.write("融券余额、总市值：" + str(sh_margin) + " " + str(
+            sz_margin) + " " + str(sh_value) + " " + str(sz_value) + "\n")
+        f.write("融资余额： " + str(sh_rz) + " " + str(sz_rz) + "\n")
+        f.write("\n")
 
 
 if __name__ == "__main__":
@@ -100,4 +134,5 @@ if __name__ == "__main__":
     # print(market_value('20221013'))
     # print(rong_zi('20221013'))
     # print(north('20221013'))
-    print(trade_ratio('20221013'))
+    # print(trade_ratio('20221013'))
+    data()
