@@ -8,6 +8,20 @@ ts.set_token('a8e773947efb1cf732c5258f45b3de232206cd541706bce0fb447779')
 pro = ts.pro_api()
 
 
+def earlier_data(func):
+    # 装饰器
+    def wrapper(*args, **kwargs):
+        flag = 10
+        one_day = dt.timedelta(days=1)
+        temp = func(*args, **kwargs)
+        while flag > 0 and 'no data' in temp:
+            temp = func((dt.date.today() - one_day).strftime('%Y%m%d'))
+            flag -= 1
+        return temp
+
+    return wrapper
+
+
 def stocks_num():
     # 舍弃 deprecated 上市股票数量
     sse = pro.query('stock_basic', exchange='sse', list_status='L',
@@ -17,6 +31,7 @@ def stocks_num():
     print(sse.shape[0], szse.shape[0], sse.shape[0] + szse.shape[0])
 
 
+@earlier_data
 def margin(day=''):
     # 融券余额
     today = dt.date.today().strftime("%Y%m%d")
@@ -29,6 +44,7 @@ def margin(day=''):
     return int(result.iloc[0][0]), result.iloc[0][2], result.iloc[1][2] / 1e8
 
 
+@earlier_data
 def market_value(day=''):
     # 股票数量, 总市值 （深圳股票数量不准）
     today = dt.date.today().strftime("%Y%m%d")
@@ -52,6 +68,7 @@ def market_value(day=''):
     return int(day), sh_num, sz_num, sh_value, sz_value
 
 
+@earlier_data
 def rong_zi(day=''):
     # 融资余额
     today = dt.date.today().strftime("%Y%m%d")
@@ -93,6 +110,7 @@ def trade_ratio(day=''):
     return str(ratio * 100)[:6] + '%'
 
 
+@earlier_data
 def north(day=''):
     # 北向资金 每天18-20点更新
     today = dt.date.today().strftime("%Y%m%d")
@@ -133,33 +151,13 @@ def data_2():
     t = time.strftime("%H:%M")
     one_day = dt.timedelta(days=1)
     today = dt.date.today().strftime("%Y%m%d")
-    yestoday = (dt.date.today() - one_day).strftime("%Y%m%d")
+    # yesterday = (dt.date.today() - one_day).strftime("%Y%m%d")
     today1 = dt.date.today().strftime("%Y-%m-%d %a")
 
-    flag1 = 10
     north_ = north(today)
-    d = today
-    while flag1 > 0 and 'no data' in north_:
-        north_ = north((dt.date.today() - one_day).strftime('%Y%m%d'))
-        flag1 -= 1
-
-    flag2 = 10
     mv = market_value(today)
-    while flag2 > 0 and 'no data' in market_value(today):
-        mv = market_value((dt.date.today() - one_day).strftime('%Y%m%d'))
-        flag2 -= 1
-
-    flag3 = 10
     rq = margin(today)
-    while flag3 > 0 and 'no data' in margin(today):
-        rq = margin((dt.date.today() - one_day).strftime('%Y%m%d'))
-        flag3 -= 1
-
-    flag4 = 10
     rz = rong_zi(today)
-    while flag4 > 0 and 'no data' in rong_zi(today):
-        rz = rong_zi((dt.date.today() - one_day).strftime('%Y%m%d'))
-        flag4 -= 1
 
     path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
     with open(path + "\\" + today + "_data.txt", "a", encoding="utf-8") as f:
@@ -167,9 +165,9 @@ def data_2():
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
         # f.write("一年新低： " + str(len(list(year_low()))))
-        f.write("成交比： " + trade_ratio() + "\n")
+        f.write("成交比： " + trade_ratio() + "\n")  # 这个不回溯
         f.write("股票数量、总市值： " + " ".join(map(str, mv)) + "\n")
-        f.write("融券余额、：" + " ".join(map(str, rq)) + "\n")
+        f.write("融券余额：" + " ".join(map(str, rq)) + "\n")
         f.write("融资余额： " + " ".join(map(str, rz)) + "\n")
         f.write("\n")
 
