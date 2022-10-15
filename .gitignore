@@ -3,3 +3,5 @@
 __pycache__
 akshare/0drafts.ipynb
 akshare/drafts.ipynb
+.idea/*
+.idea/
