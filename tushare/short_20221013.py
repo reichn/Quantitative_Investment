@@ -14,7 +14,7 @@ def earlier_data(func):
         flag = 10
         one_day = dt.timedelta(days=1)
         temp = func(*args, **kwargs)
-        while flag > 0 and 'no data' in temp:
+        while flag > 0 and 'no_data' in temp:
             temp = func((dt.date.today() - one_day).strftime('%Y%m%d'))
             flag -= 1
         return temp
@@ -39,7 +39,12 @@ def margin(day=''):
         day = today
     margin_ = pro.query('margin', trade_date=day, exchange_id='')
     if margin_.empty:
-        return int(day), 'no data', 'no data'
+        return int(day), 'no_data', 'no_data'
+    elif 'SSE' in margin_.values and 'SZSE' not in margin_.values:
+        return int(day), 'has_data', 'no_data'
+    elif 'SSE' not in margin_.values and 'SZSE' in margin_.values:
+        return int(day), 'no_data', 'has_data'
+
     result = margin_[['trade_date', 'exchange_id', 'rqye']]
     return int(result.iloc[0][0]), result.iloc[0][2], result.iloc[1][2] / 1e8
 
@@ -53,6 +58,8 @@ def market_value(day=''):
     df1 = pro.daily_info(trade_date=day,
                          fields="trade_date,ts_name,ts_code, com_count,total_mv")
     # print(df1)
+    if df1.empty:
+        return int(day), 'no_data', 'no_data', 'no_data', 'no_data'
     sh_a = df1.loc[df1['ts_name'] == '上海A股']
     sh_b = df1.loc[df1['ts_name'] == '上海B股']
     sh_kc = df1.loc[df1['ts_name'] == '科创板']
@@ -77,12 +84,18 @@ def rong_zi(day=''):
 
     margin_ = pro.query('margin', trade_date=day, exchange_id='')
     if margin_.empty:
-        return int(day), 'no data', 'no data'
+        return int(day), 'no_data', 'no_data'
+    elif 'SSE' in margin_.values and 'SZSE' not in margin_.values:
+        return int(day), 'has_data', 'no_data'
+    elif 'SSE' not in margin_.values and 'SZSE' in margin_.values:
+        return int(day), 'no_data', 'has_data'
+
     result = margin_[['trade_date', 'exchange_id', 'rzye']]
     return int(result.iloc[0][0]), result.iloc[0][2] / 1e8, result.iloc[1][
         2] / 1e8
 
 
+@earlier_data
 def trade_ratio(day=''):
     # 成交比
     today = dt.date.today().strftime("%Y%m%d")
@@ -101,13 +114,15 @@ def trade_ratio(day=''):
         "pct_chg",
         "amount"
     ])
+    if df.empty:
+        return 'no_data'
     df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     N = df_sort.shape[0]
     half = floor(N / 2)
     first_sum = df_sort["amount"][:half].sum()
     second_sum = df_sort["amount"][half + 1:].sum()
     ratio = (first_sum - second_sum) / df_sort["amount"].sum()
-    return "{:.2%}".format(ratio)
+    return day, "{:.2%}".format(ratio)
 
 
 @earlier_data
@@ -118,7 +133,7 @@ def north(day=''):
         day = today
     df = pro.query('moneyflow_hsgt', trade_date=day)
     if df.empty:
-        return int(day), 'no data'
+        return int(day), 'no_data'
     return int(df['trade_date']), float(df['north_money']) / 100
 
 
@@ -167,7 +182,7 @@ def data_2():
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
         # f.write("一年新低： " + str(len(list(year_low()))))
-        f.write("成交比： " + trade_ratio() + "\n")  # 这个不回溯
+        f.write("成交比： " + " ".join(map(str, trade_ratio())) + "\n")  # 这个不回溯
         f.write("股票数量、总市值： " + " ".join(map(str, mv)) + "\n")
         f.write("融券余额：" + " ".join(map(str, rq)) + "\n")
         f.write("融资余额： " + " ".join(map(str, rz)) + "\n")
