@@ -10,12 +10,16 @@ pro = ts.pro_api()
 
 def earlier_data(func):
     # 装饰器
-    def wrapper(*args, **kwargs):
+    def wrapper(day):
         flag = 10
+        d = day
         one_day = dt.timedelta(days=1)
-        temp = func(*args, **kwargs)
+
+        temp = func(day)
         while flag > 0 and 'no_data' in temp:
-            temp = func((dt.date.today() - one_day).strftime('%Y%m%d'))
+            d = (dt.date(int(d[:4]), int(d[4:6]), int(d[6:8])) -
+                 one_day).strftime("%Y%m%d")
+            temp = func(d)
             flag -= 1
         return temp
 
@@ -97,7 +101,7 @@ def trade_ratio(day=''):
         "amount"
     ])
     if df.empty:
-        return 'no_data'
+        return day, 'no_data'
     df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     n = df_sort.shape[0]
     half = floor(n / 2)
@@ -151,10 +155,17 @@ def data_2():
     # yesterday = (dt.date.today() - one_day).strftime("%Y%m%d")
     today1 = dt.date.today().strftime("%Y-%m-%d %a")
 
-    north_ = north(today)
-    mv = market_value(today)
-    rq = margin(today)[:3]
-    rz = margin(today)[3:]
+    df = pro.trade_cal(exchange='', start_date=today)
+    if df.loc[df['cal_date'] == today]['is_open'][0] == 0:
+        day = df.loc[df['cal_date'] == today]['pretrade_date'][0]
+    elif df.loc[df['cal_date'] == today]['is_open'][0] == 1:
+        day = today
+
+    north_ = north(day)
+    tr = trade_ratio(day)
+    mv = market_value(day)
+    rq = margin(day)[:3]
+    rz = margin(day)[3:]
 
     file_name = str(max(list(zip(north_, mv, rq))[0]))  # last date
     path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
@@ -164,7 +175,7 @@ def data_2():
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
         # f.write("一年新低： " + str(len(list(year_low()))))
-        f.write("成交比： " + " ".join(map(str, trade_ratio())) + "\n")  # 这个不回溯
+        f.write("成交比： " + " ".join(map(str, tr)) + "\n")  # 这个不回溯
         f.write(
             "股票数量、融券、总市值： " + " ".join(
                 map(str, mv[:3])) + " | " + " ".join(
