@@ -105,10 +105,11 @@ def trade_ratio(day=''):
     df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     n = df_sort.shape[0]
     half = floor(n / 2)
-    first_sum = df_sort["amount"][:half].sum()
-    second_sum = df_sort["amount"][half + 1:].sum()
+    trade_date = df['trade_date'].loc[0]
+    first_sum = df_sort["amount"].loc[:half].sum()
+    second_sum = df_sort["amount"].loc[half + 1:].sum()
     ratio = (first_sum - second_sum) / df_sort["amount"].sum()
-    return day, "{:.2%}".format(ratio)
+    return trade_date, "{:.2%}".format(ratio)
 
 
 @earlier_data
@@ -120,7 +121,8 @@ def north(day=''):
     df = pro.query('moneyflow_hsgt', trade_date=day)
     if df.empty:
         return int(day), 'no_data'
-    return int(df['trade_date']), float(df['north_money']) / 100
+    return int(df['trade_date']), "{:.2f}".format(float(df['north_money'][0]) /
+                                                  100)
 
 
 def data():
