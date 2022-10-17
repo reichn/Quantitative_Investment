@@ -51,8 +51,8 @@ def margin(day=''):
 
     result = margin_[['trade_date', 'exchange_id', 'rqye', 'rzye']]
     return int(result.iloc[0][0]), result.iloc[0][2], result.iloc[1][2] / 1e8, \
-           result.iloc[0][2] / 1e8, result.iloc[1][
-               2] / 1e8
+           result.iloc[0][3] / 1e8, result.iloc[1][
+               3] / 1e8
 
 
 @earlier_data
@@ -165,7 +165,7 @@ def data_2():
     tr = trade_ratio(day)
     mv = market_value(day)
     rq = margin(day)[:3]
-    rz = margin(day)[3:]
+    rz = [rq[0]] + list(margin(day)[3:])
 
     file_name = str(max(list(zip(north_, mv, rq))[0]))  # last date
     path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
