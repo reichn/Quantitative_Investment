@@ -1,7 +1,7 @@
 import datetime as dt
-import os
 import time
 from math import floor
+from pathlib import Path
 
 import tushare as ts
 
@@ -105,8 +105,10 @@ def trade_ratio(day=''):
         return int(day), 'no_data'
     # df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     df_sort = df.sort_values(by="pct_chg", ascending=False)
-    if not os.path.exists(day + '.csv'):
-        df_sort.to_csv('daily_data/' + day + '.csv')
+
+    p = Path.cwd() / "daily_data"
+    if not p.joinpath(day + '.csv').exists():
+        df_sort.to_csv(p.joinpath(day + '.csv'))
 
     df_sort = df_sort.reset_index()
     del df_sort['index']
