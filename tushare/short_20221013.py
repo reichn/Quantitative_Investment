@@ -1,4 +1,5 @@
 import datetime as dt
+import os
 import time
 from math import floor
 
@@ -104,7 +105,8 @@ def trade_ratio(day=''):
         return int(day), 'no_data'
     # df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     df_sort = df.sort_values(by="pct_chg", ascending=False)
-    df_sort.to_csv('daily_data/' + day + '.csv')
+    if not os.path.exists(day + '.csv'):
+        df_sort.to_csv('daily_data/' + day + '.csv')
 
     n = df_sort.shape[0]
     half = floor(n / 2)
