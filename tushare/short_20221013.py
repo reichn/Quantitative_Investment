@@ -108,6 +108,12 @@ def trade_ratio(day=''):
     if not os.path.exists(day + '.csv'):
         df_sort.to_csv('daily_data/' + day + '.csv')
 
+    df_sort = df_sort.reset_index()
+    del df_sort['index']
+    # df1 = pd.read_csv(
+    #     r'D:\GRC\GitHub2\Quantitative_Investment\tushare\daily_data\20221018'
+    #     r'.csv')
+    # df2 = df_sort.reset_index()['amount'] - df1['amount']
     n = df_sort.shape[0]
     half = floor(n / 2)
     trade_date = df['trade_date'].loc[0]
@@ -147,7 +153,7 @@ def data():
         f.write("北上资金： " + str(north_) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
         # f.write("一年新低： " + str(len(list(year_low()))))
-        f.write("成交比： " + trade_ratio() + "\n")
+        # f.write("成交比： " + trade_ratio() + "\n")
         f.write("股票数量： " + str(sh_num) + "" + str(sz_num) + "\n")
         f.write("融券余额、总市值：" + str(sh_margin) + " " + str(
             sz_margin) + " " + str(sh_value) + " " + str(sz_value) + "\n")

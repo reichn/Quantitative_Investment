@@ -2,11 +2,11 @@ from math import floor
 
 import pandas as pd
 
-df1 = pd.read_csv('20221017.csv')
-df2 = pd.read_csv('choice1017.csv', na_values='——')
+# df1 = pd.read_csv('20221017.csv')
+# df2 = pd.read_csv('choice1017.csv', na_values='——')
 
-# df1 = pd.read_csv('20221018.csv')
-# df2 = pd.read_csv('choice1018.csv', na_values='——')
+df1 = pd.read_csv('20221018.csv')
+df2 = pd.read_csv('choice1018.csv', na_values='——')
 
 df1.reset_index()
 
