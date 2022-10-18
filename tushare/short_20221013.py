@@ -101,15 +101,18 @@ def trade_ratio(day=''):
         "amount"
     ])
     if df.empty:
-        return day, 'no_data'
-    df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
+        return int(day), 'no_data'
+    # df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
+    df_sort = df.sort_values(by="pct_chg", ascending=False)
+    df_sort.to_csv('daily_data/' + day + '.csv')
+
     n = df_sort.shape[0]
     half = floor(n / 2)
     trade_date = df['trade_date'].loc[0]
     first_sum = df_sort["amount"].loc[:half].sum()
     second_sum = df_sort["amount"].loc[half + 1:].sum()
     ratio = (first_sum - second_sum) / df_sort["amount"].sum()
-    return trade_date, "{:.2%}".format(ratio)
+    return int(trade_date), "{:.2%}".format(ratio)
 
 
 @earlier_data
@@ -150,18 +153,21 @@ def data():
         f.write("\n")
 
 
-def data_2():
+def data_2(d=''):
     t = time.strftime("%H:%M")
     # one_day = dt.timedelta(days=1)
     today = dt.date.today().strftime("%Y%m%d")
     # yesterday = (dt.date.today() - one_day).strftime("%Y%m%d")
     today1 = dt.date.today().strftime("%Y-%m-%d %a")
 
-    df = pro.trade_cal(exchange='', start_date=today)
-    if df.loc[df['cal_date'] == today]['is_open'][0] == 0:
-        day = df.loc[df['cal_date'] == today]['pretrade_date'][0]
-    elif df.loc[df['cal_date'] == today]['is_open'][0] == 1:
-        day = today
+    if not d:
+        df = pro.trade_cal(exchange='', start_date=today)
+        if df.loc[df['cal_date'] == today]['is_open'][0] == 0:
+            day = df.loc[df['cal_date'] == today]['pretrade_date'][0]
+        elif df.loc[df['cal_date'] == today]['is_open'][0] == 1:
+            day = today
+    else:
+        day = d
 
     north_ = north(day)
     tr = trade_ratio(day)
@@ -169,7 +175,7 @@ def data_2():
     rq = margin(day)[:3]
     rz = [rq[0]] + list(margin(day)[3:])
 
-    file_name = str(max(list(zip(north_, mv, rq))[0]))  # last date
+    file_name = str(max(list(zip(north_, tr, mv, rq))[0]))  # last date
     path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
     with open(path + "\\" + file_name + "_data.txt", "a",
               encoding="utf-8") as f:
