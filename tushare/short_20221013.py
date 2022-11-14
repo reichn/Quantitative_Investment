@@ -149,8 +149,10 @@ def data():
     sh_margin, sz_margin = margin(today)[1:]
     # sh_rz, sz_rz = rong_zi(today)[1:]
 
-    path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
-    with open(path + "\\" + today + "_data.txt", "a", encoding="utf-8") as f:
+    # TODO: 根据平台修改地址
+    # path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    path = Path(".") / today / "_data.txt"
+    with open(path, "a", encoding="utf-8") as f:
         f.write(today1 + " " + t + "\n")  # date + week + time
         f.write("北上资金： " + str(north_) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
@@ -186,9 +188,9 @@ def data_2(d=''):
     rz = [rq[0]] + list(margin(day)[3:])
 
     file_name = str(max(list(zip(north_, tr, mv, rq))[0]))  # last date
-    path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
-    with open(path + "\\" + file_name + "_data.txt", "a",
-              encoding="utf-8") as f:
+    # path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    path = Path(".") / "daily_data" / (file_name + "_data.txt")
+    with open(path, "a", encoding="utf-8") as f:
         f.write(today1 + " " + t + "\n")  # date + week + time
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
@@ -200,9 +202,9 @@ def data_2(d=''):
                 map(str, list(rq) + list(mv[3:]))) + "\n")
         f.write("融资余额： " + " ".join(map(str, rz)) + "\n")
 
-    with open(path + "\\" + file_name + "_data.txt", "a",
-              encoding="utf-8") as f:
+    with open(path, "a", encoding="utf-8") as f:
         f.write("\n")
+    print('done.')
 
 
 if __name__ == "__main__":

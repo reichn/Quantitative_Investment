@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 
 
 def main():
-    month1 = input("input first")  # format: 2015-09-01
-    month2 = input("input second")
+    month1 = input("input first (2015-09-01): ")  # format: 2015-09-01
+    month2 = input("input second: ")
     d1 = datetime.fromisoformat(month1)
     d2 = datetime.fromisoformat(month2)
     t = d2 - d1
