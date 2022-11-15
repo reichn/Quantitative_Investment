@@ -2,7 +2,7 @@ import datetime as dt
 import time
 from math import floor
 from pathlib import Path
-
+import sys
 import tushare as ts
 
 ts.set_token('a8e773947efb1cf732c5258f45b3de232206cd541706bce0fb447779')
@@ -106,9 +106,9 @@ def trade_ratio(day=''):
     # df_sort = df.sort_values(by="pct_chg", ascending=False).dropna()
     df_sort = df.sort_values(by="pct_chg", ascending=False)
 
-    p = Path.cwd() / "daily_data"
-    if not p.joinpath(day + '.csv').exists():
-        df_sort.to_csv(p.joinpath(day + '.csv'))
+    # p = Path.cwd() / "daily_data"
+    # if not p.joinpath(day + '.csv').exists():
+    #     df_sort.to_csv(p.joinpath(day + '.csv'))
 
     df_sort = df_sort.reset_index()
     del df_sort['index']
@@ -149,9 +149,14 @@ def data():
     sh_margin, sz_margin = margin(today)[1:]
     # sh_rz, sz_rz = rong_zi(today)[1:]
 
-    # TODO: 根据平台修改地址
-    # path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
-    path = Path(".") / today / "_data.txt"
+    try:
+        sys.getwindowsversion()
+        path_ = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    except AttributeError:
+        path_ = '/Users/ruichen/Nutstore Files/我的坚果云/data_xlsx 数据记录/20220617 Daily data'
+
+    path = Path(path_) / today / "_data.txt"
+    print(path)
     with open(path, "a", encoding="utf-8") as f:
         f.write(today1 + " " + t + "\n")  # date + week + time
         f.write("北上资金： " + str(north_) + "\n")
@@ -188,8 +193,19 @@ def data_2(d=''):
     rz = [rq[0]] + list(margin(day)[3:])
 
     file_name = str(max(list(zip(north_, tr, mv, rq))[0]))  # last date
+    try:
+        sys.getwindowsversion()
+        path_ = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    except AttributeError:
+        path_ = '/Users/ruichen/Nutstore Files/我的坚果云/data_xlsx 数据记录/20220617 Daily data'
+
+    path = Path(path_) / (file_name + "_data.txt")
+    print(path)
+
     # path = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
-    path = Path(".") / "daily_data" / (file_name + "_data.txt")
+    # path = Path("/Users/ruichen/Documents/GitHub/Quantitative_Investment/tushare")
+    #       / "daily_data" / (file_name + "_data.txt")
+
     with open(path, "a", encoding="utf-8") as f:
         f.write(today1 + " " + t + "\n")  # date + week + time
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
