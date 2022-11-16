@@ -193,11 +193,16 @@ def data_2(d=''):
     rz = [rq[0]] + list(margin(day)[3:])
 
     file_name = str(max(list(zip(north_, tr, mv, rq))[0]))  # last date
-    try:
-        sys.getwindowsversion()
-        path_ = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
-    except AttributeError:
+    # try:
+    #     sys.getwindowsversion()
+    #     path_ = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
+    # except AttributeError:
+    #     path_ = '/Users/ruichen/Nutstore Files/我的坚果云/data_xlsx 数据记录/20220617 Daily data'
+
+    if sys.platform == 'darwin':
         path_ = '/Users/ruichen/Nutstore Files/我的坚果云/data_xlsx 数据记录/20220617 Daily data'
+    elif sys.platform == 'win32':
+        path_ = 'D:\\我的坚果云\\data_xlsx 数据记录\\20220617 Daily data'
 
     path = Path(path_) / (file_name + "_data.txt")
     print(path)
@@ -230,4 +235,5 @@ if __name__ == "__main__":
     # print(rong_zi('20221013'))
     # print(north('20221013'))
     # print(trade_ratio('20221013'))
+    # TODO: sys.argv 接受参数，可获取其他日期的结果
     data_2()
