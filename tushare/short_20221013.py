@@ -118,6 +118,11 @@ def trade_ratio(day=''):
     # df2 = df_sort.reset_index()['amount'] - df1['amount']
     n = df_sort.shape[0]
     half = floor(n / 2)
+
+    global median_chg, ave_chg
+    median_chg = str(df_sort.iloc[half]['pct_chg'])[:4] + "%"
+    ave_chg = str(df_sort['pct_chg'].mean())[:4] + "%"
+
     trade_date = df['trade_date'].loc[0]
     first_sum = df_sort["amount"].loc[:half].sum()
     second_sum = df_sort["amount"].loc[half + 1:].sum()
@@ -216,7 +221,7 @@ def data_2(d=''):
         f.write("北上资金： " + " ".join(map(str, north_)) + "\n")
         # f.write("历史新高： " + str(len(list(his_high()))))
         # f.write("一年新低： " + str(len(list(year_low()))))
-        f.write("成交比： " + " ".join(map(str, tr)) + "\n")  # 这个不回溯
+        f.write("成交比： " + " ".join(map(str, tr)) + " 涨幅中位数： " + median_chg + " 平均涨幅： " + ave_chg + "\n")  # 这个不回溯
         f.write(
             "股票数量、融券、总市值： " + " ".join(
                 map(str, mv[:3])) + " | " + " ".join(
