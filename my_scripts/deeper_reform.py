@@ -30,7 +30,7 @@ def get_dates(method="local"):
 
 
 def parse_dates():
-    with open("deeper_reform.txt", "r") as f:
+    with open("deeper_reform.txt", "r", encoding="gb2312") as f:
         all_ = f.read()
     all_dt = []
     for date in all_.split():
@@ -78,7 +78,8 @@ def gap_between():
 
 
 def hist_plot():
-    plt.rcParams["font.sans-serif"] = ["SimHei"]  # 用来正常显示中文标签
+    # plt.rcParams["font.sans-serif"] = ["SimHei"]  # 用来正常显示中文标签
+    plt.rcParams["font.sans-serif"] = ["LXGW WenKai Mono"]  # 用来正常显示中文标签
     plt.rcParams["axes.unicode_minus"] = False  # 用来正常显示负号
     plt.rcParams["figure.constrained_layout.use"] = True
     fig, axs = plt.subplots(3, 1)
@@ -98,7 +99,7 @@ def hist_plot():
     w = []
     w_ = []
     week = ["周一", "周二", "周三", "周四", "周五"]
-    with open("deeper_reform_sort.txt", "r") as f:
+    with open("deeper_reform_sort.txt", "r", encoding="gb2312") as f:
         lines = f.readlines()
         for line in lines:
             w.append(line.split()[1])

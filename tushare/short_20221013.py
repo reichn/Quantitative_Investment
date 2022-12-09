@@ -178,7 +178,6 @@ def data():
 def data_2(d=''):
     t = time.strftime("%H:%M")
     # one_day = dt.timedelta(days=1)
-    global today
     today = dt.date.today().strftime("%Y%m%d")
     # yesterday = (dt.date.today() - one_day).strftime("%Y%m%d")
     today1 = dt.date.today().strftime("%Y-%m-%d %a")
@@ -241,7 +240,8 @@ if __name__ == "__main__":
     # print(rong_zi('20221013'))
     # print(north('20221013'))
     # print(trade_ratio('20221013'))
-    
+
+    today = dt.date.today().strftime("%Y%m%d")
     try:
         day = sys.argv[1]  # 20221119
     except IndexError:
